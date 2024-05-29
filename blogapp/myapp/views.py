@@ -1,21 +1,40 @@
-from django.http.response import HttpResponse
-from django.shortcuts import render
+from django.http.response import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.urls import reverse
 
-# Create your views here.
+data = {
+    "telefon":"telefon ürünler",
+    "bilgisayar":"bilgisayar ürünler",
+    "elektronik":"elektronik ürünler"
+}
 
-# http://127.0.0.1:8000
 def index(request):
-    return HttpResponse("Index")
-def details(request):
-    return HttpResponse("Details")
+    list_items = ""
+    category_list = list(data.keys())
+
+    for category in category_list:
+        redirect_path = reverse("products_by_category", args= [category])
+        list_items += f"<li><a href=\"{redirect_path}\">{category}</a></li>"
+
+    html = f"<ul>{list_items}</ul>"
+    return render(request, 'myapp/index.html')
+
+def getProductsByCategoryId(request, category_id):
+    category_list = list(data.keys())
+
+    if category_id > len(category_list):
+        return HttpResponseNotFound(f"<h1>yanlış kategori seçimi</h1>")
+        
+    category_name = category_list[category_id-1]
+    
+    redirect_path = reverse("products_by_category", args= [category_name])
+    
+    return redirect(redirect_path)
 
 def getProductsByCategory(request, category):
-    category_text = None
-    if category == 'bilgisayar':
-        category_text = "bilgisayarlar"
-    elif category == 'telefon':
-        category_text = 'telefonlar'
-    else:
-        category_text = 'yanlis secim'
-        
-    return HttpResponse(category_text)
+    try:
+        category_text = data[category]        
+        return HttpResponse(f"<h1>{category_text}</h1>")
+    except:
+        return HttpResponseNotFound(f"<h1>yanlış kategori seçimi</h1>")
+
