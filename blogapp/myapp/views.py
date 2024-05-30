@@ -3,10 +3,17 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 
 data = {
-    "telefon":"telefon ürünler",
-    "bilgisayar":"bilgisayar ürünler",
+    "telefon":"telefon ürünleri",
+    "bilgisayar":"bilgisayar ürünleri",
     "elektronik":"elektronik ürünler"
 }
+
+def productlist(request):
+    categories = list(data.keys())
+
+    return render(request, 'myapp/products.html', {
+        "categories": categories
+    })
 
 def index(request):
     list_items = ""
@@ -19,11 +26,13 @@ def index(request):
     html = f"<ul>{list_items}</ul>"
     return render(request, 'myapp/index.html')
 
+
+
 def getProductsByCategoryId(request, category_id):
     category_list = list(data.keys())
 
     if category_id > len(category_list):
-        return HttpResponseNotFound(f"<h1>yanlış kategori seçimi</h1>")
+        return HttpResponseNotFound(f"<h1>yanlış seçim</h1>")
         
     category_name = category_list[category_id-1]
     
