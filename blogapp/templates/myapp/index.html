@@ -7,6 +7,12 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Anasayfa</h1>
+    <ul>
+        {% for category in categories %}
+            <li>
+                <a href="{% url "products_by_category" category %}"> {{ category }}</a> 
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

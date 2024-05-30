@@ -5,28 +5,15 @@ from django.urls import reverse
 data = {
     "telefon":"telefon ürünleri",
     "bilgisayar":"bilgisayar ürünleri",
-    "elektronik":"elektronik ürünler"
+    "elektronik":"elektronik ürünleri"
 }
 
-def productlist(request):
+def index(request):
     categories = list(data.keys())
 
-    return render(request, 'myapp/products.html', {
+    return render(request, 'myapp/index.html', {
         "categories": categories
     })
-
-def index(request):
-    list_items = ""
-    category_list = list(data.keys())
-
-    for category in category_list:
-        redirect_path = reverse("products_by_category", args= [category])
-        list_items += f"<li><a href=\"{redirect_path}\">{category}</a></li>"
-
-    html = f"<ul>{list_items}</ul>"
-    return render(request, 'myapp/index.html')
-
-
 
 def getProductsByCategoryId(request, category_id):
     category_list = list(data.keys())
