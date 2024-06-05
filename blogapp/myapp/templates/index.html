@@ -10,11 +10,16 @@
 Index
 {%endblock%}
 {% block content%}
-<ul>
-    {% for category in categories %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {% for category in categories %}
         <li>
-            <a href="{% url "products_by_category" category %}"> {{ category }}</a> 
+            <a class="btn btn-primary" href="{% url "products_by_category" category %}"> {{ category }}</a> 
         </li>
     {% endfor %}
-</ul>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
